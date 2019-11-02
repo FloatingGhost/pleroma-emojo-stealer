@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RESP=$(curl --silent https://$1/api/v1/custom_emojis)
+echo $RESP | jq -r '.[] | .shortcode + " " + .static_url'
