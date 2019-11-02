@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RESP=$(curl --silent https://$1/api/v1/custom_emojis)
+PREFIX="$2"
+
+
+pushd /var/www/pleroma/priv/static/emoji/custom
+mkdir -p $PREFIX
+pushd $PREFIX
+echo $RESP | jq -r --arg PREFIX $PREFIX  '.[] | select(.static_url | contains($PREFIX)) | .static_url' | xargs wget -4
+popd
+popd
